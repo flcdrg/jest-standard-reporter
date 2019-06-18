@@ -1,16 +1,15 @@
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 const chalk = require('chalk');
 const { pluralize } = require('./utils');
-
 const ARROW = ' \u203A ';
 const DOT = ' \u2022 ';
 const FAIL_COLOR = chalk.bold.red;
 const SNAPSHOT_ADDED = chalk.bold.green;
 const SNAPSHOT_UPDATED = chalk.bold.green;
 const SNAPSHOT_OUTDATED = chalk.bold.yellow;
-
 const getSnapshotStatus = (snapshot, afterUpdate) => {
   const statuses = [];
-
   if (snapshot.added) {
     statuses.push(
       SNAPSHOT_ADDED(
@@ -18,7 +17,6 @@ const getSnapshotStatus = (snapshot, afterUpdate) => {
       )
     );
   }
-
   if (snapshot.updated) {
     statuses.push(
       SNAPSHOT_UPDATED(
@@ -26,13 +24,11 @@ const getSnapshotStatus = (snapshot, afterUpdate) => {
       )
     );
   }
-
   if (snapshot.unmatched) {
     statuses.push(
       FAIL_COLOR(`${ARROW + pluralize('snapshot', snapshot.unmatched)} failed.`)
     );
   }
-
   if (snapshot.unchecked) {
     if (afterUpdate) {
       statuses.push(
@@ -47,17 +43,13 @@ const getSnapshotStatus = (snapshot, afterUpdate) => {
         )}.`
       );
     }
-
     snapshot.uncheckedKeys.forEach(key => {
       statuses.push(`  ${DOT}${key}`);
     });
   }
-
   if (snapshot.fileDeleted) {
     statuses.push(SNAPSHOT_UPDATED(`${ARROW}snapshot file removed.`));
   }
-
   return statuses;
 };
-
-module.exports = getSnapshotStatus;
+exports.default = getSnapshotStatus;

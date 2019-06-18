@@ -1,33 +1,33 @@
+'use strict';
 /* eslint-disable no-underscore-dangle */
-
+var __importDefault =
+  (this && this.__importDefault) ||
+  function(mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
+Object.defineProperty(exports, '__esModule', { value: true });
 const { isInteractive } = require('jest-util');
 const Status = require('./status');
 const Stdlib = require('./stdlib');
 const getResultHeader = require('./getResultHeader');
-const getSnapshotStatus = require('./getSnapshotStatus');
+const getSnapshotStatus_1 = __importDefault(require('./getSnapshotStatus'));
 const getSummary = require('./getSummary');
 const getTestResults = require('./getTestResults');
-
 class StandardReporter {
   constructor(globalConfig) {
     this.globalConfig = globalConfig;
     this.stdlib = new Stdlib(globalConfig);
-
     this.error = null;
     this.clear = '';
     this.status = new Status();
-
     this.status.onChange(() => {});
   }
-
   getLastError() {
     return this.error;
   }
-
   setError(error) {
     this.error = error;
   }
-
   /**
    * @param results
    * @param options
@@ -38,14 +38,12 @@ class StandardReporter {
       this.stdlib.clear();
     }
   }
-
   /**
    * @param test
    */
   onTestStart(test) {
     this.status.testStarted(test.path, test.context.config);
   }
-
   /**
    * @param test
    * @param testResult
@@ -57,7 +55,6 @@ class StandardReporter {
       this.stdlib.log(
         getResultHeader(testResult, this.globalConfig, test.context.config)
       );
-
       if (
         this.globalConfig.verbose &&
         !testResult.testExecError &&
@@ -65,13 +62,11 @@ class StandardReporter {
       ) {
         this.stdlib.log(getTestResults(testResult.testResults));
       }
-
       if (testResult.failureMessage) {
         this.stdlib.error(testResult.failureMessage);
       }
-
       const didUpdate = this.globalConfig.updateSnapshot === 'all';
-      const snapshotStatuses = getSnapshotStatus(
+      const snapshotStatuses = getSnapshotStatus_1.default(
         testResult.snapshot,
         didUpdate
       );
@@ -79,7 +74,6 @@ class StandardReporter {
     }
     this.stdlib.forceFlushBufferedOutput();
   }
-
   /**
    * @param contexts
    * @param aggregatedResults
@@ -91,5 +85,4 @@ class StandardReporter {
     this.stdlib.clear();
   }
 }
-
 module.exports = StandardReporter;

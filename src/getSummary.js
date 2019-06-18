@@ -1,12 +1,17 @@
-const chalk = require('chalk');
+'use strict';
+var __importDefault =
+  (this && this.__importDefault) ||
+  function(mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
+Object.defineProperty(exports, '__esModule', { value: true });
+const chalk_1 = __importDefault(require('chalk'));
 const { pluralize, renderTime } = require('./utils');
-
 const getSummary = (aggregatedResults, options) => {
   let runTime = (Date.now() - aggregatedResults.startTime) / 1000;
   if (options && options.roundTime) {
     runTime = Math.floor(runTime);
   }
-
   const estimatedTime = (options && options.estimatedTime) || 0;
   const snapshotResults = aggregatedResults.snapshot;
   const snapshotsAdded = snapshotResults.added;
@@ -28,58 +33,62 @@ const getSummary = (aggregatedResults, options) => {
   const testsTodo = aggregatedResults.numTodoTests;
   const testsTotal = aggregatedResults.numTotalTests;
   const width = (options && options.width) || 0;
-
-  const suites = `${chalk.bold('Test Suites: ') +
-    (suitesFailed ? `${chalk.bold.red(`${suitesFailed} failed`)}, ` : '') +
-    (suitesPending
-      ? `${chalk.bold.yellow(`${suitesPending} skipped`)}, `
+  const suites = `${chalk_1.default.bold('Test Suites: ') +
+    (suitesFailed
+      ? `${chalk_1.default.bold.red(`${suitesFailed} failed`)}, `
       : '') +
-    (suitesPassed ? `${chalk.bold.green(`${suitesPassed} passed`)}, ` : '') +
+    (suitesPending
+      ? `${chalk_1.default.bold.yellow(`${suitesPending} skipped`)}, `
+      : '') +
+    (suitesPassed
+      ? `${chalk_1.default.bold.green(`${suitesPassed} passed`)}, `
+      : '') +
     (suitesRun !== suitesTotal
       ? `${suitesRun} of ${suitesTotal}`
       : suitesTotal)} total`;
-
-  const tests = `${chalk.bold('Tests:       ') +
-    (testsFailed ? `${chalk.bold.red(`${testsFailed} failed`)}, ` : '') +
-    (testsPending ? `${chalk.bold.yellow(`${testsPending} skipped`)}, ` : '') +
-    (testsTodo ? `${chalk.bold.magenta(`${testsTodo} todo`)}, ` : '') +
+  const tests = `${chalk_1.default.bold('Tests:       ') +
+    (testsFailed
+      ? `${chalk_1.default.bold.red(`${testsFailed} failed`)}, `
+      : '') +
+    (testsPending
+      ? `${chalk_1.default.bold.yellow(`${testsPending} skipped`)}, `
+      : '') +
+    (testsTodo
+      ? `${chalk_1.default.bold.magenta(`${testsTodo} todo`)}, `
+      : '') +
     (testsPassed
-      ? `${chalk.bold.green(`${testsPassed} passed`)}, `
+      ? `${chalk_1.default.bold.green(`${testsPassed} passed`)}, `
       : '')}${testsTotal} total`;
-
-  const snapshots = `${chalk.bold('Snapshots:   ') +
+  const snapshots = `${chalk_1.default.bold('Snapshots:   ') +
     (snapshotsFailed
-      ? `${chalk.bold.red(`${snapshotsFailed} failed`)}, `
+      ? `${chalk_1.default.bold.red(`${snapshotsFailed} failed`)}, `
       : '') +
     (snapshotsOutdated && !snapshotsDidUpdate
-      ? `${chalk.bold.yellow(`${snapshotsOutdated} obsolete`)}, `
+      ? `${chalk_1.default.bold.yellow(`${snapshotsOutdated} obsolete`)}, `
       : '') +
     (snapshotsOutdated && snapshotsDidUpdate
-      ? `${chalk.bold.green(`${snapshotsOutdated} removed`)}, `
+      ? `${chalk_1.default.bold.green(`${snapshotsOutdated} removed`)}, `
       : '') +
     (snapshotsFilesRemoved && !snapshotsDidUpdate
-      ? `${chalk.bold.yellow(
+      ? `${chalk_1.default.bold.yellow(
           `${pluralize('file', snapshotsFilesRemoved)} obsolete`
         )}, `
       : '') +
     (snapshotsFilesRemoved && snapshotsDidUpdate
-      ? `${chalk.bold.green(
+      ? `${chalk_1.default.bold.green(
           `${pluralize('file', snapshotsFilesRemoved)} removed`
         )}, `
       : '') +
     (snapshotsUpdated
-      ? `${chalk.bold.green(`${snapshotsUpdated} updated`)}, `
+      ? `${chalk_1.default.bold.green(`${snapshotsUpdated} updated`)}, `
       : '') +
     (snapshotsAdded
-      ? `${chalk.bold.green(`${snapshotsAdded} written`)}, `
+      ? `${chalk_1.default.bold.green(`${snapshotsAdded} written`)}, `
       : '') +
     (snapshotsPassed
-      ? `${chalk.bold.green(`${snapshotsPassed} passed`)}, `
+      ? `${chalk_1.default.bold.green(`${snapshotsPassed} passed`)}, `
       : '')}${snapshotsTotal} total`;
-
   const time = renderTime(runTime, estimatedTime, width);
-
   return [suites, tests, snapshots, time].join('\n');
 };
-
 module.exports = getSummary;

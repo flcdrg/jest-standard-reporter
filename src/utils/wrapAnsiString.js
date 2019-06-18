@@ -1,3 +1,4 @@
+'use strict';
 // word-wrap a string that contains ANSI escape sequences.
 // ANSI escape sequences do not add to the string length.
 const wrapAnsiString = (string, terminalWidth) => {
@@ -5,12 +6,10 @@ const wrapAnsiString = (string, terminalWidth) => {
     // if the terminal width is zero, don't bother word-wrapping
     return string;
   }
-
   const ANSI_REGEXP = /[\\u001b\\u009b]\[\d{1,2}m/g;
   const tokens = [];
   let lastIndex = 0;
   let match;
-
   while ((match = ANSI_REGEXP.exec(string))) {
     const ansi = match[0];
     const index = match.index;
@@ -20,13 +19,10 @@ const wrapAnsiString = (string, terminalWidth) => {
     tokens.push(['ansi', ansi]);
     lastIndex = index + ansi.length;
   }
-
   if (lastIndex != string.length - 1) {
     tokens.push(['string', string.slice(lastIndex, string.length)]);
   }
-
   let lastLineLength = 0;
-
   return tokens
     .reduce(
       (lines, [kind, token]) => {
@@ -53,12 +49,10 @@ const wrapAnsiString = (string, terminalWidth) => {
         } else {
           lines[lines.length - 1] += token;
         }
-
         return lines;
       },
       ['']
     )
     .join('\n');
 };
-
 module.exports = wrapAnsiString;
