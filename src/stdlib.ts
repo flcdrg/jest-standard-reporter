@@ -48,7 +48,7 @@ class Stdlib {
     const originalWrite = stream.write;
 
     let buffer = [];
-    let timeout = null;
+    let timeout: NodeJS.Timeout | null = null;
 
     const flushBufferedOutput = () => {
       const string = buffer.join('');

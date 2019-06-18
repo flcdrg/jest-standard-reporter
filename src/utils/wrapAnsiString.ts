@@ -7,7 +7,7 @@ const wrapAnsiString = (string, terminalWidth) => {
   }
 
   const ANSI_REGEXP = /[\\u001b\\u009b]\[\d{1,2}m/g;
-  const tokens = [];
+  const tokens: [string, any][] = [];
   let lastIndex = 0;
   let match;
 
